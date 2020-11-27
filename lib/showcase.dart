@@ -29,7 +29,8 @@ class Showcase extends StatefulWidget {
   final VoidCallback onTargetClick;
   final bool disposeOnTap;
   final bool disableAnimation;
-  final Widget skipWidget;
+  final Color skipButtonColor;
+  final String skipText;
 
   const Showcase({
     @required this.key,
@@ -50,7 +51,8 @@ class Showcase extends StatefulWidget {
     this.disableAnimation = false,
     this.contentPadding = const EdgeInsets.symmetric(vertical: 8),
     this.onToolTipClick,
-    this.skipWidget,
+    this.skipButtonColor = Colors.transparent,
+    this.skipText = 'Ignore',
   })  : height = null,
         width = null,
         container = null,
@@ -80,28 +82,29 @@ class Showcase extends StatefulWidget {
             shapeBorder != null ||
             animationDuration != null);
 
-  const Showcase.withWidget(
-      {this.key,
-      @required this.child,
-      @required this.container,
-      @required this.height,
-      @required this.width,
-      this.title,
-      this.description,
-      this.shapeBorder,
-      this.overlayColor = Colors.black,
-      this.overlayOpacity = 0.75,
-      this.titleTextStyle,
-      this.descTextStyle,
-      this.showcaseBackgroundColor = Colors.white,
-      this.textColor = Colors.black,
-      this.onTargetClick,
-      this.disposeOnTap,
-      this.animationDuration = const Duration(milliseconds: 2000),
-      this.disableAnimation = false,
-      this.contentPadding = const EdgeInsets.symmetric(vertical: 8),
-      this.skipWidget})
-      : this.showArrow = false,
+  const Showcase.withWidget({
+    this.key,
+    @required this.child,
+    @required this.container,
+    @required this.height,
+    @required this.width,
+    this.title,
+    this.description,
+    this.shapeBorder,
+    this.overlayColor = Colors.black,
+    this.overlayOpacity = 0.75,
+    this.titleTextStyle,
+    this.descTextStyle,
+    this.showcaseBackgroundColor = Colors.white,
+    this.textColor = Colors.black,
+    this.onTargetClick,
+    this.disposeOnTap,
+    this.animationDuration = const Duration(milliseconds: 2000),
+    this.disableAnimation = false,
+    this.contentPadding = const EdgeInsets.symmetric(vertical: 8),
+    this.skipButtonColor = Colors.transparent,
+    this.skipText = 'Ignore',
+  })  : this.showArrow = false,
         this.onToolTipClick = null,
         assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
             "overlay opacity should be >= 0.0 and <= 1.0."),
@@ -215,6 +218,11 @@ class _ShowcaseState extends State<Showcase> with TickerProviderStateMixin {
     }
   }
 
+  _skipShowCase() {
+    timer = null;
+    ShowCaseWidget.of(context).dismiss();
+  }
+
   _getOnTooltipTap() {
     if (widget.disposeOnTap == true) {
       return widget.onToolTipClick == null
@@ -280,7 +288,31 @@ class _ShowcaseState extends State<Showcase> with TickerProviderStateMixin {
               onTooltipTap: _getOnTooltipTap(),
               contentPadding: widget.contentPadding,
             ),
-            Align(alignment: Alignment.bottomRight, child: widget.skipWidget)
+            Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: GestureDetector(
+                    onTap: _skipShowCase,
+                    child: Material(
+                      color: widget.skipButtonColor,
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        height: 50,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white, width: 1),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Center(
+                          child: Text(
+                            widget.skipText,
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ))
           ],
         ),
       );

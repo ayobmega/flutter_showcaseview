@@ -177,6 +177,8 @@ class _MailPageState extends State<MailPage> {
                                   key: _four,
                                   height: 50,
                                   width: 140,
+                                  skipButtonColor: Colors.red,
+                                  skipText: 'Ignorer',
                                   shapeBorder: CircleBorder(),
                                   container: Column(
                                     crossAxisAlignment:

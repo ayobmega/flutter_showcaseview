@@ -82,9 +82,9 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
 
   String findPositionForContent(Offset position) {
     if (isCloseToTopOrBottom(position)) {
-      return 'ABOVE';
-    } else {
       return 'BELOW';
+    } else {
+      return 'ABOVE';
     }
   }
 
