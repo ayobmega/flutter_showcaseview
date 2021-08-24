@@ -31,6 +31,7 @@ class Showcase extends StatefulWidget {
   final bool disableAnimation;
   final Color skipButtonColor;
   final String skipText;
+  final onTapSkip;
 
   const Showcase({
     @required this.key,
@@ -42,6 +43,7 @@ class Showcase extends StatefulWidget {
     this.overlayOpacity = 0.75,
     this.titleTextStyle,
     this.descTextStyle,
+    this.onTapSkip,
     this.showcaseBackgroundColor = Colors.white,
     this.textColor = Colors.black,
     this.showArrow = true,
@@ -103,6 +105,7 @@ class Showcase extends StatefulWidget {
     this.disableAnimation = false,
     this.contentPadding = const EdgeInsets.symmetric(vertical: 8),
     this.skipButtonColor = Colors.transparent,
+    this.onTapSkip,
     this.skipText = 'Ignore',
   })  : this.showArrow = false,
         this.onToolTipClick = null,
@@ -221,6 +224,7 @@ class _ShowcaseState extends State<Showcase> with TickerProviderStateMixin {
   _skipShowCase() {
     timer = null;
     ShowCaseWidget.of(context).dismiss();
+    widget.onTapSkip();
   }
 
   _getOnTooltipTap() {
